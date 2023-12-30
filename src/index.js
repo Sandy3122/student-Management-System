@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {mongoURI, secretKey} = require('./src/config')
+const {mongoURI, secretKey} = require('./config')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
