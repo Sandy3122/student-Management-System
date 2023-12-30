@@ -2,14 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const {mongoURI, secretKey} = require('./src/config')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
 mongoose.set('strictQuery', false);
-const mongoUrl = process.env.MONGO_URL || 'mongodb+srv://Sandeep1999:Sandeep3122@sandeep.nlcna.mongodb.net/=studentanagementystem?retryWrites=true&w=majority';
-mongoose.connect(mongoUrl, {
+mongoose.connect(mongoURI, {
   maxPoolSize: 15,
 })
 .then(() => {
