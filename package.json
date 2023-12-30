@@ -1,0 +1,11 @@
+{
+  "name": "student-management-system",
+  "version": "1.0.0",
+  "description": "Student Management System Api Using Node.js, Expree.js And MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Seeram Sandeep",
+  "license": "ISC"
+}
