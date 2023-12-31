@@ -12,15 +12,17 @@ const createAdminAccount = async () => {
       email: "admin@admin.com",
     }).maxTimeMS(30000);
 
+    // Checking for existing admin
     if (!existingAdmin) {
       const hashedPassword = await bcrypt.hash("admin", 10); // Hash the password 'admin'
 
+      // Saving admin login routes
       const admin = new Admin({
         email: "admin@admin.com",
         password: hashedPassword,
       });
-
       await admin.save();
+
       console.log("Admin account created successfully");
     } else {
       console.log("Admin account already exists");
@@ -38,11 +40,17 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validating required fields, email and password
+    if (!(email && password)) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
     const admin = await Admin.findOne({ email });
     if (!admin || !bcrypt.compareSync(password, admin.password)) {
       return res.status(401).json({ message: "Invalid Credentials" });
     }
 
+    // Creating the admin token
     const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "1h" });
 
     res.json({
@@ -50,16 +58,31 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    // Duplicate email error handling
+    if (error.code === 11000 && error.keyPattern.email === 1) {
+      return res.status(400).json({ message: "Email already exists" });
+    } 
+    // Other Unexpected Errors
+    else {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
 };
 
 const addStudent = async (req, res) => {
   try {
     const { name, email, department, password } = req.body;
+
+    // Validating all required fields
+    if (!(name && email && department && password)) {
+      return res.status(400).json({ message: "All fields (name, email, department, password) are required" });
+    }
+
+    // Hashing admin entered Password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
+    // Saving student data in database
     const student = new Student({
       name,
       email,
@@ -68,13 +91,15 @@ const addStudent = async (req, res) => {
     });
     await student.save();
 
+    // Sending response for the request
     res.status(201).json({ message: "Student added successfully", student });
   } catch (error) {
+    // Duplicate email error handling
     if (error.code === 11000 && error.keyPattern.email === 1) {
-      // Duplicate email error handling
       return res.status(400).json({ message: "Email already exists" });
-    } else {
-      // Other errors
+    } 
+    // Other Unexpected Errors
+    else {
       console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -85,6 +110,11 @@ const addStudent = async (req, res) => {
 const assignTask = async (req, res) => {
   try {
     const { studentEmail, description, dueTime } = req.body;
+
+    // Validating all required fields
+    if (!(studentEmail && description && dueTime)) {
+      return res.status(400).json({ message: "All fields (studentEmail, description, dueTime) are required" });
+    }
 
     // Finding the student by email id
     const student = await Student.findOne({ email: studentEmail });
@@ -116,6 +146,7 @@ const assignTask = async (req, res) => {
       task: newTask,
     });
   } catch (error) {
+    // Other Unexpected Errors
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }

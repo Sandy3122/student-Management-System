@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/login', studentController.login);
 router.get('/tasks', verifyStudentToken, studentController.getTasks);
-
+router.put('/updateTaskStatus/:taskId', verifyStudentToken, studentController.updateTaskStatus);
 
 
 module.exports = router;
