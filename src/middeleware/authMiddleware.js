@@ -2,13 +2,21 @@ const jwt = require('jsonwebtoken');
 const { secretKey } = require('../config');
 
 const verifyAdminToken = (req, res, next) => {
-    // Get token from header
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDQwMDQ0MDcsImV4cCI6MTcwNDAwODAwN30.aEvWgpqFLLg1tb20o2f1SzEdZ_gqbgLrBXC4dK3m228';
+    // console.log('Full Request:', req.headers);
+    const authHeader = req.headers.authorization;
 
-    // if(!token){
-    //     return res.status(401).json({ message: 'Unauthorized'});
-    // }
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // Extract token without the "Bearer " prefix
+    const token = authHeader.split(' ')[1];
+    console.log('Received token:', token);
     
+    if(!token){
+        return res.status(401).json({ message: 'Unauthorized'});
+    }
+
     try {
         const decoded = jwt.verify(token, secretKey);
         console.log("Decoded Token:", decoded);

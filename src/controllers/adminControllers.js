@@ -66,8 +66,14 @@ const addStudent = async(req, res) => {
 
         res.status(201).json({ message: 'Student added successfully', student });
     } catch (error) {
+        if (error.code === 11000 && error.keyPattern.email === 1) {
+          // Duplicate email error handling
+          return res.status(400).json({ message: 'Email already exists' });
+        } else {
+          // Other errors
           console.error(error);
           return res.status(500).json({ message: 'Internal server error' });
+        }
     }
 }
  

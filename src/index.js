@@ -4,10 +4,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {mongoURI} = require('./config');
 const adminRoutes = require('./routes/adminroutes');
+const cors = require('cors');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+// Enable CORS for all routes
+app.use(cors());
 
 
 // MongoDB Database Connection
