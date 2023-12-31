@@ -7,7 +7,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const studentRoutes = require('./routes/studentRoutes')
 const cors = require('cors');
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -26,7 +25,7 @@ const connectDatabase = async () => {
       console.error(`Not Connected To MongoDB: ${error}`);
   }
 };
-
+// Calling The database connection function.
 connectDatabase();
 
 

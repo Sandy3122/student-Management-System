@@ -6,8 +6,6 @@ const { secretKey } = require("../config/index");
 const moment = require("moment"); // To parse the input date and time.
 const adminErrorHandler = require('../ErrorHandling/adminErrorHandler')
 
-
-
 // Creating the admin account
 const createAdminAccount = async () => {
   try {
@@ -38,6 +36,7 @@ const createAdminAccount = async () => {
 // It automatically creates the admin account.
 createAdminAccount();
 
+
 // Admin Login Controller
 const login = async (req, res) => {
   try {
@@ -67,6 +66,8 @@ const login = async (req, res) => {
   }
 };
 
+
+// Route for adding student
 const addStudent = async (req, res) => {
   try {
     const { name, email, department, password } = req.body;
@@ -96,7 +97,8 @@ const addStudent = async (req, res) => {
   }
 };
 
-// Assign the task to student.
+
+// Route for assigning the task to student.
 const assignTask = async (req, res) => {
   try {
     const { studentEmail, description, dueTime } = req.body;
@@ -141,6 +143,8 @@ const assignTask = async (req, res) => {
   }
 };
 
+
+// Exporting modules
 module.exports = {
   login,
   addStudent,

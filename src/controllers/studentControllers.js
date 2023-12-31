@@ -110,6 +110,8 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 
+
+// Exporting modules
 module.exports = {
   login,
   getTasks,
