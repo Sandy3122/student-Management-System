@@ -5,6 +5,34 @@ const Student = require('../model/studentModel');
 const {secretKey} = require('../config/index');
 
 
+// Creating the admin account
+const createAdminAccount = async () => {
+    try {
+      const existingAdmin = await Admin.findOne({ email: 'admin@admin.com' });
+  
+      if (!existingAdmin) {
+        const hashedPassword = await bcrypt.hash('admin', 10); // Hash the password 'admin'
+  
+        const admin = new Admin({
+          email: 'admin@admin.com',
+          password: hashedPassword,
+        });
+  
+        await admin.save();
+        console.log('Admin account created successfully');
+      } else {
+        console.log('Admin account already exists');
+      }
+    } catch (error) {
+      console.error('Error creating admin account:', error);
+    }
+  };
+
+// It automatically creates the admin account.
+createAdminAccount();
+
+
+// Admin Login Controller
 const login = async(req, res) => {
     try{
         const {email, password } = req.body;
@@ -28,31 +56,23 @@ const login = async(req, res) => {
 };
 
 
-// New code for creating the admin account
-const createAdminAccount = async () => {
+const addStudent = async(req, res) => {
     try {
-      const existingAdmin = await Admin.findOne({ email: 'admin@admin.com' });
-  
-      if (!existingAdmin) {
-        const hashedPassword = await bcrypt.hash('admin', 10); // Hash the password 'admin'
-  
-        const admin = new Admin({
-          email: 'admin@admin.com',
-          password: hashedPassword,
-        });
-  
-        await admin.save();
-        console.log('Admin account created successfully');
-      } else {
-        console.log('Admin account already exists');
-      }
+        const {name, email, department, password} = req.body;
+        const hashedPassword = bcrypt.hashSync(password, 10);
+
+        const student = new Student({ name, email, department, password:hashedPassword});
+        await student.save();
+
+        res.status(201).json({ message: 'Student added successfully', student });
     } catch (error) {
-      console.error('Error creating admin account:', error);
+          console.error(error);
+          return res.status(500).json({ message: 'Internal server error' });
     }
-  };
-  
-createAdminAccount(); // Call the function when the server starts
+}
+ 
 
 module.exports=  {
-    login
+    login,
+    addStudent
     }
