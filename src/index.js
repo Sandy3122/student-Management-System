@@ -1,13 +1,16 @@
 const express = require('express');
-const app = express();
+const app = express();  // Creating express instance with app
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {mongoURI, secretKey} = require('./config')
+const {mongoURI} = require('./config');
+const adminRoutes = require('./routes/adminroutes');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+// MongoDB Database Connection
 mongoose.set('strictQuery', false);
 mongoose.connect(mongoURI, {
   maxPoolSize: 15,
@@ -20,8 +23,17 @@ mongoose.connect(mongoURI, {
 });
   
 
-const PORT = process.env.PORT || 8000;
+// Routes for admin
+app.use('/admin', adminRoutes);
 
+app.use((req, res, next) => {
+  console.log(`Received a request: ${req.method} ${req.url}`);
+  next();
+});
+
+
+// Importing PORT from .env
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Server Start: http://localhost/${PORT}`);
 });
