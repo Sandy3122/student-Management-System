@@ -70,4 +70,5 @@ const verifyStudentToken = (req, res, next) => {
 
 module.exports = {
     verifyAdminToken,
+    verifyStudentToken
 }

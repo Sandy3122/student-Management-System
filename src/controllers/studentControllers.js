@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const Student = require('../model/studentModel');
 const { secretKey } = require('../config');
 
+
+// Login Route
 const login = async(req, res) => {
     try {
         const { email, password } = req.body;
@@ -42,7 +44,31 @@ const login = async(req, res) => {
 
 
 
+// Route to get student tasks
+const getTasks = async(req, res) => {
+    try {
+        const student = await Student.findOne({ email: req.user.email});
 
+        if(!student){
+            return res.status(404).json({ message: 'Student Not Found' });
+        }
+
+        // Sending the student data in the response
+        res.json({
+            studentName: student.name,
+            studentEmail: student.email,
+            tasks: student.tasks
+        })
+    } catch (error) {
+        console.log(error);
+        // Handle different types of errors
+        if (error.name === 'ValidationError') {
+            return res.status(422).json({ error: 'Validation error' });
+        } else {
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+}
 
 
 
@@ -50,5 +76,6 @@ const login = async(req, res) => {
 
 
 module.exports = {
-    login
+    login,
+    getTasks
 }

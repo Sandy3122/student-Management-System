@@ -5,6 +5,8 @@ const { verifyStudentToken } = require("../middeleware/authMiddleware");
 const router = express.Router();
 
 router.post('/login', studentController.login);
+router.get('/tasks', verifyStudentToken, studentController.getTasks);
+
 
 
 module.exports = router;
