@@ -4,7 +4,7 @@ const Admin = require("../model/adminModel");
 const Student = require("../model/studentModel");
 const { secretKey } = require("../config/index");
 const moment = require("moment"); // To parse the input date and time.
-const adminErrorHandler = require('../Error Handling/adminErrorHandler')
+const adminErrorHandler = require('../ErrorHandling/adminErrorHandler')
 
 
 

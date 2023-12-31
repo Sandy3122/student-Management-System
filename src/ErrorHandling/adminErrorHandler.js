@@ -1,3 +1,4 @@
+// adminErrorHandlings
 const adminErrorHandler = (error, req, res, next) => {
   console.error(error);
 
