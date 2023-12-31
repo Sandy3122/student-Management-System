@@ -9,7 +9,7 @@ const verifyAdminToken = (req, res, next) => {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // Extract token without the "Bearer " prefix
+    // Extracting token without the "Bearer " prefix
     const token = authHeader.split(' ')[1];
     console.log('Received token:', token);
 
@@ -33,7 +33,6 @@ const verifyAdminToken = (req, res, next) => {
       }
 }
 
-
 module.exports = {
-    verifyAdminToken
+    verifyAdminToken,
 }

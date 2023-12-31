@@ -3,7 +3,8 @@ const app = express();  // Creating express instance with app
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {mongoURI} = require('./config');
-const adminRoutes = require('./routes/adminroutes');
+const adminRoutes = require('./routes/adminRoutes');
+const studentRoutes = require('./routes/studentRoutes')
 const cors = require('cors');
 
 
@@ -17,35 +18,21 @@ app.use(cors());
 
 // MongoDB Database Connection
 mongoose.set('strictQuery', false);
-mongoose.connect(mongoURI, {
-  maxPoolSize: 15,
-  serverSelectionTimeoutMS: 5000, // Adjust the timeout value as needed
-});
-// .then(() => {
-//   console.log("Successfully Connected To MongoDB Database.");
-// })
-// .catch((e) => {
-//   console.log("Not Connected To MongoDB Database. Error:", e);
-// });
-  
-const db = mongoose.connection;
+const connectDatabase = async () => {
+  try {
+      await mongoose.connect('mongodb://0.0.0.0:27017/studentManagementSystem');
+      console.log("Connected to MongoDB Database");
+  } catch (error) {
+      console.error(`Not Connected To MongoDB: ${error}`);
+  }
+};
 
-db.on('error', (err) => {
-  console.error(`MongoDB connection error: ${err}`);
-});
-
-db.once('open', () => {
-  console.log('Successfully Connected to MongoDB');
-});
-
-db.on('disconnected', () => {
-  console.log('MongoDB disconnected');
-});
+connectDatabase();
 
 
-
-// Routes for admin
+// Routes for admin and student
 app.use('/admin', adminRoutes);
+app.use('/student', studentRoutes);
 
 app.use((req, res, next) => {
   console.log(`Received a request: ${req.method} ${req.url}`);
