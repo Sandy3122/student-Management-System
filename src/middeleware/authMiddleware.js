@@ -12,10 +12,6 @@ const verifyAdminToken = (req, res, next) => {
     // Extract token without the "Bearer " prefix
     const token = authHeader.split(' ')[1];
     console.log('Received token:', token);
-    
-    if(!token){
-        return res.status(401).json({ message: 'Unauthorized'});
-    }
 
     try {
         const decoded = jwt.verify(token, secretKey);
@@ -28,9 +24,13 @@ const verifyAdminToken = (req, res, next) => {
         next();
 
     } catch (error) {
-        console.log(error.message);
-        res.status(401).json({ message: 'Unauthorized' });
-    }
+        if (error.name === 'TokenExpiredError') {
+          return res.status(401).json({ message: 'Token expired' });
+        } else {
+          console.error(error);
+          return res.status(401).json({ message: 'Unauthorized' });
+        }
+      }
 }
 
 

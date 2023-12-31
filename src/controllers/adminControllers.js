@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Admin = require('../model/adminModel');
 const Student = require('../model/studentModel');
 const {secretKey} = require('../config/index');
+const moment = require('moment');       // To parse the input date and time.
 
 
 // Creating the admin account
@@ -76,9 +77,34 @@ const addStudent = async(req, res) => {
         }
     }
 }
+
+
+const assignTask = async(req, res) => {
+    try {
+        const { studentEmail, description, dueTime } = req.body;
+
+        const student = await Student.findOne({ email: studentEmail});
+
+        if(!student){
+            return res.status(404).json({message:'Student Not Found'});
+        }
+
+        // Parsing the dueTime into valid date and time formate
+        const dueDateTime = moment(dueTime, 'DD-MM-YYYY, hA').toDate();
+        student.tasks.push({ description, dueTime: dueDateTime });
+        await student.save();
+
+        res.json({ message: 'Task Assigned Successfully '});
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
  
 
 module.exports=  {
     login,
-    addStudent
+    addStudent,
+    assignTask
     }
