@@ -89,6 +89,23 @@ const assignTask = async(req, res) => {
             return res.status(404).json({message:'Student Not Found'});
         }
 
+        // Checking if the task with the same description is already exists
+        const existingTask = student.tasks.find(task => task.description === description);
+
+        if (existingTask) {
+          // Parsing the new dueTime into a valid date and time format using moment
+          const newDueDateTime = moment(dueTime, 'DD-MM-YYYY, hA').toDate();
+        
+          // Checking if the new dueTime is different from the existing one
+          if (!existingTask.dueTime || existingTask.dueTime.getTime() !== newDueDateTime.getTime()) {
+            existingTask.dueTime = newDueDateTime;
+            await student.save();
+            return res.json({ message: 'Task Due Time Updated Successfully' });
+          } else {
+            return res.status(400).json({ message: 'No changes made to the task' });
+          }
+        }
+
         // Parsing the dueTime into valid date and time formate
         const dueDateTime = moment(dueTime, 'DD-MM-YYYY, hA').toDate();
         student.tasks.push({ description, dueTime: dueDateTime });
