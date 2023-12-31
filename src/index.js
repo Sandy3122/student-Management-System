@@ -19,14 +19,30 @@ app.use(cors());
 mongoose.set('strictQuery', false);
 mongoose.connect(mongoURI, {
   maxPoolSize: 15,
-})
-.then(() => {
-  console.log("Successfully Connected To MongoDB Database.");
-})
-.catch((e) => {
-  console.log("Not Connected To MongoDB Database. Error:", e);
+  serverSelectionTimeoutMS: 5000, // Adjust the timeout value as needed
 });
+// .then(() => {
+//   console.log("Successfully Connected To MongoDB Database.");
+// })
+// .catch((e) => {
+//   console.log("Not Connected To MongoDB Database. Error:", e);
+// });
   
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+});
+
+db.once('open', () => {
+  console.log('Successfully Connected to MongoDB');
+});
+
+db.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
+
 
 // Routes for admin
 app.use('/admin', adminRoutes);

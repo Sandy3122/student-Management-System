@@ -12,5 +12,7 @@ const adminSchema = new mongoose.Schema({
     }
 });
 
+// Create an index on the email field
+adminSchema.index({ email: 1 });
 
 module.exports = mongoose.model('Admin', adminSchema);
