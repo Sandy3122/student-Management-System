@@ -4,6 +4,9 @@ const Admin = require("../model/adminModel");
 const Student = require("../model/studentModel");
 const { secretKey } = require("../config/index");
 const moment = require("moment"); // To parse the input date and time.
+const adminErrorHandler = require('../Error Handling/adminErrorHandler')
+
+
 
 // Creating the admin account
 const createAdminAccount = async () => {
@@ -54,19 +57,13 @@ const login = async (req, res) => {
     const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "1h" });
 
     res.json({
+      message: 'Admin Login Successful',
       _id: admin._id,
       token,
     });
-  } catch (error) {
-    // Duplicate email error handling
-    if (error.code === 11000 && error.keyPattern.email === 1) {
-      return res.status(400).json({ message: "Email already exists" });
-    } 
-    // Other Unexpected Errors
-    else {
-      console.error(error);
-      return res.status(500).json({ message: "Internal server error" });
-    }
+  }
+  catch (error) {
+    adminErrorHandler(error, req, res);
   }
 };
 
@@ -93,16 +90,9 @@ const addStudent = async (req, res) => {
 
     // Sending response for the request
     res.status(201).json({ message: "Student added successfully", student });
-  } catch (error) {
-    // Duplicate email error handling
-    if (error.code === 11000 && error.keyPattern.email === 1) {
-      return res.status(400).json({ message: "Email already exists" });
-    } 
-    // Other Unexpected Errors
-    else {
-      console.error(error);
-      return res.status(500).json({ message: "Internal server error" });
-    }
+  }
+  catch (error) {
+    adminErrorHandler(error, req, res);
   }
 };
 
@@ -145,10 +135,9 @@ const assignTask = async (req, res) => {
       studentName: student.name,
       task: newTask,
     });
-  } catch (error) {
-    // Other Unexpected Errors
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+  }
+  catch (error) {
+    adminErrorHandler(error, req, res);
   }
 };
 
