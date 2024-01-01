@@ -51,7 +51,7 @@ const login = async (req, res) => {
     }
 
     // Creating the admin token
-    const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "1h" });
+    const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "5m" });
 
     res.json({
       message: 'Admin Login Successful',

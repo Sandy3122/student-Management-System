@@ -1,18 +1,50 @@
 const express = require('express');
-const app = express();  // Creating express instance with app
+const app = express();  // Creating express instance with 
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {mongoURI} = require('./config');
 const adminRoutes = require('./routes/adminRoutes');
 const studentRoutes = require('./routes/studentRoutes')
-const cors = require('cors');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+
+// Applying rate limiting middleware
+// Admin API Rate Limit
+const adminLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100, // 300 requests per minute per API key
+  handler: (req, res) => {
+    res.status(429).json({
+      status: 'error',
+      message: 'Rate limit exceeded for Admin API. Please try again later.',
+    });
+  },
+});
+
+// Student API Rate Limit
+const studentLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 500, // 500 requests per minute per API key
+  handler: (req, res) => {
+    res.status(429).json({
+      status: 'error',
+      message: 'Rate limit exceeded for Student API. Please try again later.',
+    });
+  },
+});
+
+app.use('/admin', adminLimiter);
+app.use('/student', studentLimiter);
 
 
 // Enable CORS for all routes
 app.use(cors());
+
+// Parsing Json D ata
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 // MongoDB Database Connection

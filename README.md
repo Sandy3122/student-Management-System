@@ -65,7 +65,6 @@ The valid URL for accessing the API is http://localhost:8000.
 Before running the application, you need to set up your environment variables. Create a file named `.env` in the root of your project and add the following variables:
 
     ```sh
-
     .env
 
     ```
@@ -73,7 +72,6 @@ Before running the application, you need to set up your environment variables. C
 # Set the port for your server
 
     ```sh
-
     PORT=8000
 
     ```
@@ -81,7 +79,6 @@ Before running the application, you need to set up your environment variables. C
 # MongoDB connection string
 
     ```sh
-
     MONGOURI=mongodb://localhost:27017/studentManagementSystem
 
     ```
@@ -89,9 +86,8 @@ Before running the application, you need to set up your environment variables. C
 # Secret key for JWT token generation
 
     ```sh
-    
     SECRETKEY=mysecretkey
-    
+
     ```
 
 
