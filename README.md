@@ -64,18 +64,35 @@ The valid URL for accessing the API is http://localhost:8000.
 
 Before running the application, you need to set up your environment variables. Create a file named `.env` in the root of your project and add the following variables:
 
-    ```env
-    # .env
+    ```sh
+
+    .env
+
     ```
 
 # Set the port for your server
-PORT=8000
+
+    ```sh
+
+    PORT=8000
+
+    ```
 
 # MongoDB connection string
-MONGOURI=mongodb://localhost:27017/studentManagementSystem
+
+    ```sh
+
+    MONGOURI=mongodb://localhost:27017/studentManagementSystem
+
+    ```
 
 # Secret key for JWT token generation
-SECRETKEY=mysecretkey
+
+    ```sh
+    
+    SECRETKEY=mysecretkey
+    
+    ```
 
 
 ## Project Overview
