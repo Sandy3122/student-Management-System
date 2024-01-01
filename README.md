@@ -64,8 +64,9 @@ The valid URL for accessing the API is http://localhost:8000.
 
 Before running the application, you need to set up your environment variables. Create a file named `.env` in the root of your project and add the following variables:
 
-```env
-# .env
+    ```env
+    # .env
+    ```
 
 # Set the port for your server
 PORT=8000
@@ -82,7 +83,7 @@ SECRETKEY=mysecretkey
 The Student Management System allows administrators to manage student information, assign tasks, and track task statuses. Students can log in, view their tasks, and update task statuses.
 
 
-### Admin Routes:
+## Admin Routes:
 
 1. **Admin Login (`POST /admin/login`):**
    - Allows administrators to log in securely.
@@ -93,7 +94,8 @@ The Student Management System allows administrators to manage student informatio
 3. **Assign Task (`POST /admin/assignTask`):**
    - Allows administrators to assign tasks to students.
 
-### Student Routes:
+
+## Student Routes:
 
 1. **Student Login (`POST /student/login`):**
    - Allows students to log in securely.
@@ -108,6 +110,7 @@ The Student Management System allows administrators to manage student informatio
 ## Error Handling
 
 Errors are handled uniformly across routes using a centralized error handling mechanism. Specific error types, such as duplicate emails or validation errors, are appropriately handled and result in meaningful responses.
+
 
 ## Linting and Formatting
 
