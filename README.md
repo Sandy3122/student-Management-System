@@ -63,13 +63,12 @@ The valid URL for accessing the API is http://localhost:8000.
 ## Configuration
 
 Before running the application, you need to set up your environment variables. Create a file named `.env` in the root of your project and add the following variables:
-
-    
-# .env
+   
+* .env
 
 # Set the port for your server
 
-*PORT=8000
+* PORT=8000
 
 # MongoDB connection string
 
