@@ -25,13 +25,15 @@ const verifyAdminToken = (req, res, next) => {
         next();
 
     } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-          return res.status(401).json({ message: 'Token expired' });
-        } else {
-          console.error(error);
-          return res.status(401).json({ message: 'Unauthorized' });
-        }
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Unauthorized: Token Expired' });
+      } else if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Unauthorized: Invalid Token' });
+      } else {
+        console.error(error);
+        return res.status(401).json({ message: 'Unauthorized' });
       }
+    }
 }
 
 
@@ -59,13 +61,15 @@ const verifyStudentToken = (req, res, next) => {
       next();
 
   } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({ message: 'Token expired' });
-      } else {
-        console.error(error);
-        return res.status(401).json({ message: 'Unauthorized' });
-      }
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Unauthorized: Token Expired' });
+    } else if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Unauthorized: Invalid Token' });
+    } else {
+      console.error(error);
+      return res.status(401).json({ message: 'Unauthorized' });
     }
+  }
 }
 
 module.exports = {

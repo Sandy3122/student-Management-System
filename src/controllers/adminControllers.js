@@ -45,13 +45,22 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
+    // Getting admin data from MongoDB
     const admin = await Admin.findOne({ email });
-    if (!admin || !bcrypt.compareSync(password, admin.password)) {
-      return res.status(401).json({ message: "Invalid Credentials" });
+
+    // Checking if the admin exists
+    if (!admin) {
+      return res.status(401).json({ error: "Email not found" });
+    }
+
+    // Checking if the password is correct
+    const isPasswordCorrect = bcrypt.compareSync(password, admin.password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ error: "Incorrect password" });
     }
 
     // Creating the admin token
-    const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "5m" });
+    const token = jwt.sign({ role: "admin" }, secretKey, { expiresIn: "2h" });
 
     res.json({
       message: 'Admin Login Successful',

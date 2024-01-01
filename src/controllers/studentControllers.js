@@ -18,9 +18,16 @@ const login = async (req, res) => {
     const student = await Student.findOne({ email });
 
     // Checking if the student exists
-    if (!student || !bcrypt.compareSync(password, student.password)) {
-      return res.status(401).send({ error: "Email or Password incorrect" });
+    if (!student) {
+      return res.status(401).json({ error: "Email not found" });
     }
+
+    // Checking if the password is correct
+    const isPasswordCorrect = bcrypt.compareSync(password, student.password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ error: "Incorrect password" });
+    }
+
 
     // Generating and sending the JWT token
     const token = jwt.sign(
@@ -79,6 +86,11 @@ const updateTaskStatus = async (req, res) => {
     const task = student.tasks.id(taskId);
     if (!task) {
       return res.status(400).json({ message: "Task Not Found!" });
+    }
+
+    // Checking if the task status is the same
+    if (task.status === status) {
+      return res.status(400).json({ message: "Task Status is already the same" });
     }
 
     // Checking for valid task status
