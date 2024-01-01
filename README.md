@@ -26,7 +26,7 @@ The valid URL for accessing the API is [http://localhost:8000](http://localhost:
 
 ## API Documentation
 
-The API documentation is available on Postman. You can access it [here](https://grey-firefly-60783.postman.co/workspace/New-Team-Workspace~1cc59f27-4464-431e-8594-af42679a81f1/collection/29114733-bc59ec35-e5f9-4336-9647-c652e03a7e1b?action=share&creator=29114733).
+The API documentation is available on Postman. You can access it [here](https://documenter.getpostman.com/view/29114733/2s9YsDkv2L).
 
 
 ## Getting Started
