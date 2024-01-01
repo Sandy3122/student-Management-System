@@ -9,9 +9,7 @@ const adminErrorHandler = require('../ErrorHandling/adminErrorHandler')
 // Creating the admin account
 const createAdminAccount = async () => {
   try {
-    const existingAdmin = await Admin.findOne({
-      email: "admin@admin.com",
-    }).maxTimeMS(30000);
+    const existingAdmin = await Admin.findOne({ email: "admin@admin.com" });
 
     // Checking for existing admin
     if (!existingAdmin) {
